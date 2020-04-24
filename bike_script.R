@@ -1,7 +1,7 @@
 library(tidyverse)
 
 #load raw data
-bike.df = as.tibble(read.csv( ".\\data\\bikeshare.csv", stringsAsFactors = FALSE))
+#bike.df = as.tibble(read.csv( ".\\data\\bikeshare.csv", stringsAsFactors = FALSE))
 
 #check data
 head(bike.df)
@@ -28,8 +28,7 @@ names(bike.df) <- str_to_title(names(bike.df))
 
 
 
-bike.df %>%  filter(Workingday == 1) %>% group_by(Date,Type) %>% summarise(Total = sum(Typecount,na.rm = T)) %>% 
-  ggplot(aes(x = Date, y = Total)) + geom_bar(aes(fill = Type), stat = 'identity',position = 'dodge')
+
 
 group_by(bike.df,Workingday) %>% summarise(sum(Typecount,na.rm = T))
 
@@ -41,16 +40,16 @@ head(bike.df)
 
 
 #Bike useage count per usertype
-bike.df %>% group_by(type) %>% summarise(Total = sum(TypeCount)) %>% 
-  ggplot(aes(x = type, y = Total)) + geom_bar(fill = 'red', stat = 'identity')
+bike.df %>% group_by(Type) %>% summarise(Total = sum(Typecount)) %>% 
+  ggplot(aes(x = Type, y = Total)) + geom_bar(fill = 'red', stat = 'identity')
 
 #Bike useage count per year and usertype
 bike.df %>% group_by(year,type) %>% summarise(Total = sum(TypeCount)) %>% 
   ggplot(aes(x = year, y = Total)) + geom_bar(aes(fill = type), stat = 'identity', position = 'dodge')
 
 ##Bike useage count per usertype per season
-bike.df %>% group_by(season,type) %>% summarise(Total = sum(TypeCount)) %>% 
-  ggplot(aes(x = season,y = Total)) + geom_bar(aes(fill = type), stat="identity",position = 'dodge') +
+bike.df %>% group_by(Season,type) %>% summarise(Total = sum(TypeCount)) %>% 
+  ggplot(aes(x = Season,y = Total)) + geom_bar(aes(fill = Type), stat="identity",position = 'dodge') +
   labs( title = "Bike Usage per Season per User Type",
         x = "Season", y = 'Total Count' )
 
@@ -79,7 +78,7 @@ ggplot(bike,aes(x = hours,y=count))+geom_line(stat ='identity') + geom_smooth(me
 
 # bike.df$hours = ifelse(bike.df$hours == '0','12 AM',ifelse(bike.df$hours == '1','1 AM',ifelse(bike.df$hours= '2','2 AM', \
 #                 ifelse(bike.df$hours == '3','3 AM',ifelse(bike.df$hours == '4','4 AM',ifelse(bike.df$hours == '5','5 AM', ifelse(bike.df$hours == '6','6 AM',
-# ifelse(bike.df$hours == ))))))))  
+ifelse(bike.df$hours == ))))))))  
 
 
 bike.df$season = levesl(ordered("Winter","Spring","Summer","Fall"))

@@ -5,13 +5,13 @@ fluidPage(
   sidebarLayout(
     sidebarPanel( 
       selectizeInput(inputId='year',label='Select a Year',
-                    choices = unique(bike.df$year),
-                    select=unique(bike.df$year)
+                    choices = unique(bike.df$Year),
+                    select=unique(bike.df$Year)
       ),
       
       selectizeInput(inputId='usertype',label=' Select a UserType',
-                     choices =unique(bike.df$type),
-                     select=unique(bike.df$type)[1]
+                     choices =unique(bike.df$Type),
+                     select=unique(bike.df$Type)[1]
                      ), width = 3
     ),
     mainPanel(
