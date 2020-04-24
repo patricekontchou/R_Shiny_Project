@@ -72,10 +72,9 @@ function(input,output) {
             x = "Hours", y = 'Total Count' )
   })
   
-  output$author = renderText({ " About the author: This is the " 
-    
-    
-    })
+  # output$author = renderText({ "This app was designed and built by Patrice Kontchou.
+  # Patrice is a Data Scientist fello at NYC Data Science Academy. Before Joining NYCDSA I graduated "
+    # })
   
   
 }
