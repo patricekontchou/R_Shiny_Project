@@ -11,23 +11,37 @@ function(input,output) {
   output$usercount = renderPlot({
     filter_year() %>% group_by(Type) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Type, y = Total)) + geom_bar(fill = 'red', stat = 'identity') +
-      theme(text=element_text(size=15))
+      labs( title = "Bike Usage for each User Type per year.", 
+            x = "User Type", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   output$seasonYear = renderPlot({
     ##Bike useage count per userType per Season
     filter_year() %>% 
       group_by(Season,Type) %>% summarise(Total = sum(Typecount)) %>% 
-      ggplot(aes(x = Season,y = Total)) + geom_bar(aes(fill = Type), stat="identity",position = 'dodge') +
-      labs( title = "Bike Usage per Season per User Type",
-            x = "Season", y = 'Total Count' ) + 
+      ggplot(aes(x = Season,y = Total), aes_string(colour = "blue")) + 
+      geom_bar(aes(fill = Type), stat="identity",position = 'dodge') +
+      labs( title = "Bike Usage per User Type per season.", 
+            x = "Season", y = 'Total Count' ) +  
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
-            axis.ticks = element_line(size = 2))
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   output$boxplot = renderPlot({
     filter_year() %>% 
-      ggplot(aes(x = Type, y = Typecount)) + geom_boxplot(fill = 'red')
+      ggplot(aes(x = Type, y = Typecount)) + geom_boxplot(fill = 'red') +
+      labs( title = "Box plot showing the distribution of usage for each User type per year.", 
+            x = "User Type", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   ####### To feed the second tabPanel#####
@@ -36,43 +50,63 @@ function(input,output) {
       filter(Type==input$usertype) 
   })
   
+  #Bike useage count per year and userType
   output$userBoxplot = renderPlot({
-    #Bike useage count per year and userType
     filter_user() %>% 
-      ggplot(aes(x = Season, y = Typecount)) + geom_boxplot(  fill = 'Green' )
+      ggplot(aes(x = Season, y = Typecount)) + geom_boxplot(  fill = 'Green' ) +
+      labs( title = "Box plot showing user type's distribution of usage per season for each year.", 
+            x = "Season", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   output$seasonUser = renderPlot({
-    # filter_user() %>% 
-    #   summarise(TotalCount = sum(Typecount)) -> count.df
-      
     filter_user() %>% group_by(Season) %>% summarise(Total = sum(Typecount)) %>%  
-      ggplot(aes(x = Season,y = Total)) + geom_bar(fill = 'red', stat="identity")
+      ggplot(aes(x = Season,y = Total)) + geom_bar(fill = 'red', stat="identity")+
+      labs( title = "Box plot showing user type's distribution of usage per season for each year.", 
+            x = "Season", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
+  ##Bike useage count per userType per Season
   output$userHourly = renderPlot({
-    ##Bike useage count per userType per Season
     filter_user() %>% 
       group_by(Hours) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Hours,y = Total)) + geom_bar(fill = 'Red', stat="identity") +
-      labs( title = "Bike Usage per Season per User Type",
-            x = "Season", y = 'Total Count' )
+      labs( title = "Bike Usage per Season per User Type.", 
+          x = "Hours in 24 hours Format", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   
   output$seasonCombined = renderPlot({
-    #filter_year() %>% summarise(TotalCount = sum(Typecount)) -> count.df
-    
-    filter_year() %>% group_by(Season,Type) %>% summarise(Total = sum(Typecount)) %>%  
-      ggplot(aes(x = Season,y = Total)) + geom_bar(aes(fill = Type), stat="identity", position = 'dodge')
+    filter_year() %>% group_by(Season,Type,Hours) %>% summarise(Total = sum(Typecount)) %>%  
+      ggplot(aes(x = Hours,y = Total)) + geom_bar(aes(fill = Type), stat="identity", position = 'dodge') + facet_wrap(~Season)+
+      labs( title = "Bike Usage per Season per User Type.", 
+            x = "Hours in 24 hours Format", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   output$hourslyCombined = renderPlot({
-    ##Bike useage count per userType per Season
     filter_year() %>% group_by(Hours,Type) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Hours,y = Total)) + geom_bar(aes(fill = Type), stat="identity", position = 'dodge') +
-      labs( title = "Demand Per Year For both UserType.",
-            x = "Hours", y = 'Total Count' )
+      labs( title = "Bike Usage per Season per User Type.", 
+          x = "Hours in 24 hours Format", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
   })
   
   # output$author = renderText({ "This app was designed and built by Patrice Kontchou.

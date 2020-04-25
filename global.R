@@ -1,23 +1,24 @@
+#loading required libraries
 library(shiny)
 library(tidyverse)
-#library(leaflet)
-#library(googleVis)
 
+#read pre-processed data
 bike.df = read.csv('.\\data\\processed_bike.csv', stringsAsFactors = FALSE )
+
+# No need to read the raw file since is pre-processed using bik_script
 #bike.df = read.csv( ".\\data\\bikeshare.csv", stringsAsFactors = FALSE)
-#head(bike.df,3)
 
+#inspect the structure of the loaded data
+#str(bike.df)
 
+#Convert required columns
 bike.df$Hours = as.factor(bike.df$Hours)
 bike.df$Type = as.factor(bike.df$Type)
 bike.df$Season = as.factor(bike.df$Season)
 bike.df$Holiday = as.factor(bike.df$Holiday)
-#bike.df$Date = as.Date(bike.df$datetime,'%Y-%m-%d')
 bike.df$Year = as.factor(bike.df$Year)
-#bike.df$month = as.factor(format(bike.df$date, '%m'))
-#bike.df$season = relevel(bike.df$season ,"Winter","Spring","Summer", "Fall")
-#bike.df$workingday = as.factor(bike.df$workingday)
 
-#unique(bike.df$Type)
-
+#Take a peek in the read data to confirm tranformation
 #str(bike.df)
+#head(bike.df,3)
+
