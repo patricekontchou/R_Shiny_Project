@@ -10,7 +10,8 @@ function(input,output) {
   #Bike useage count per userType
   output$usercount = renderPlot({
     filter_year() %>% group_by(Type) %>% summarise(Total = sum(Typecount)) %>% 
-      ggplot(aes(x = Type, y = Total)) + geom_bar(fill = 'red', stat = 'identity')
+      ggplot(aes(x = Type, y = Total)) + geom_bar(fill = 'red', stat = 'identity') +
+      theme(text=element_text(size=15))
   })
   
   output$seasonYear = renderPlot({
@@ -19,7 +20,9 @@ function(input,output) {
       group_by(Season,Type) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Season,y = Total)) + geom_bar(aes(fill = Type), stat="identity",position = 'dodge') +
       labs( title = "Bike Usage per Season per User Type",
-            x = "Season", y = 'Total Count' )
+            x = "Season", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            axis.ticks = element_line(size = 2))
   })
   
   output$boxplot = renderPlot({

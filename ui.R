@@ -16,7 +16,7 @@ fluidPage(
       selectizeInput(inputId='usertype',label=' Select a UserType',
                      choices =unique(bike.df$Type),
                      select=unique(bike.df$Type)[1]
-                     ), width = 3
+                     ), width = 4
     ),
     mainPanel(
       tabsetPanel(
