@@ -1,7 +1,7 @@
 library(tidyverse)
 
 #load raw data
-#bike.df = as.tibble(read.csv( ".\\data\\bikeshare.csv", stringsAsFactors = FALSE))
+bike.df = as.tibble(read.csv( ".\\data\\bikeshare.csv", stringsAsFactors = FALSE))
 
 #check data
 head(bike.df)
@@ -13,6 +13,7 @@ bike.df$season = ifelse(bike.df$season == 1,'Spring',ifelse(bike.df$season == 2,
 bike.df$holiday = ifelse(bike.df$holiday == 1,'Holiday','Non-Holiday')
 bike.df$hours = substr(bike.df$datetime,12,13)
 
+#bike.df$Date = as.factor(bike.df$Date)
 bike.df$hours = as.factor(bike.df$hours)
 bike.df$type = as.factor(bike.df$type)
 bike.df$season = as.factor(bike.df$season)
@@ -26,14 +27,15 @@ levels(bike.df$season)
 levels(bike.df$year)
 names(bike.df) <- str_to_title(names(bike.df))
 
-
+bike.df$season = factor(bike.df$season, levels = c("Winter","Spring","Summer","Fall"))
 
 
 
 group_by(bike.df,Workingday) %>% summarise(sum(Typecount,na.rm = T))
+bike.df_f = select(bike.df,Date,Hours,Season,Typecount,Type,Year,Holiday)
 
 #Save processed data
-write.csv(bike.df,".\\data\\processed_bike.csv",row.names = FALSE)
+write.csv(bike.df_f,".\\data\\processed_bike.csv",row.names = FALSE)
 f = read.csv(".\\data\\processed_bike.csv",stringsAsFactors = F)
 head(bike.df)
 
@@ -74,13 +76,17 @@ bike$date = strsplit()  bike$datetime
 
 ggplot(bike,aes(x = hours,y=count))+geom_line(stat ='identity') + geom_smooth(method = 'lm')
 
+head(bike.df,3)
 
 
-# bike.df$hours = ifelse(bike.df$hours == '0','12 AM',ifelse(bike.df$hours == '1','1 AM',ifelse(bike.df$hours= '2','2 AM', \
-#                 ifelse(bike.df$hours == '3','3 AM',ifelse(bike.df$hours == '4','4 AM',ifelse(bike.df$hours == '5','5 AM', ifelse(bike.df$hours == '6','6 AM',
-ifelse(bike.df$hours == ))))))))  
+bike.df %>% group_by(Date,Type) %>% summarise(AvgT = mean(Temp), AvgC = mean(Typecount))  -> dateg2
+ggplot(dateg2,aes(x =AvgT,y= AvgC) ) + geom_point(aes(color = Type,geom="line"), stat = 'identity') + 
+  geom_smooth(aes(color = Type), method = 'lm')
 
+head(dateg,3)
+ggplot(dateg,aes(x =Date,y= Avg) ) + geom_line(aes(color = Type), stat = 'identity')
 
+str(bike.df)
 bike.df$season = levesl(ordered("Winter","Spring","Summer","Fall"))
 levels(bike.df$season)
 unique(bike$hours)

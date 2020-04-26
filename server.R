@@ -54,7 +54,7 @@ function(input,output) {
   output$userBoxplot = renderPlot({
     filter_user() %>% 
       ggplot(aes(x = Season, y = Typecount)) + geom_boxplot(  fill = 'Green' ) +
-      labs( title = "Box plot showing user type's distribution of usage per season for each year.", 
+      labs( title = "Bike usage distribution per user for both years combined.", 
             x = "Season", y = 'Total Count' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
@@ -65,7 +65,7 @@ function(input,output) {
   output$seasonUser = renderPlot({
     filter_user() %>% group_by(Season) %>% summarise(Total = sum(Typecount)) %>%  
       ggplot(aes(x = Season,y = Total)) + geom_bar(fill = 'red', stat="identity")+
-      labs( title = "Box plot showing user type's distribution of usage per season for each year.", 
+      labs( title = "Usage per user for each season both year combined.", 
             x = "Season", y = 'Total Count' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
@@ -78,7 +78,7 @@ function(input,output) {
     filter_user() %>% 
       group_by(Hours) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Hours,y = Total)) + geom_bar(fill = 'Red', stat="identity") +
-      labs( title = "Bike Usage per Season per User Type.", 
+      labs( title = "Usage per hour per user type.", 
           x = "Hours in 24 hours Format", y = 'Total Count' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
@@ -86,11 +86,11 @@ function(input,output) {
       scale_fill_discrete(name = "User Type")
   })
   
-  
+  ####### To feed the second tabPanel#####
   output$seasonCombined = renderPlot({
     filter_year() %>% group_by(Season,Type,Hours) %>% summarise(Total = sum(Typecount)) %>%  
       ggplot(aes(x = Hours,y = Total)) + geom_bar(aes(fill = Type), stat="identity", position = 'dodge') + facet_wrap(~Season)+
-      labs( title = "Bike Usage per Season per User Type.", 
+      labs( title = "Bike usage per User type, per hour and per year for each season.", 
             x = "Hours in 24 hours Format", y = 'Total Count' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
@@ -101,7 +101,7 @@ function(input,output) {
   output$hourslyCombined = renderPlot({
     filter_year() %>% group_by(Hours,Type) %>% summarise(Total = sum(Typecount)) %>% 
       ggplot(aes(x = Hours,y = Total)) + geom_bar(aes(fill = Type), stat="identity", position = 'dodge') +
-      labs( title = "Bike Usage per Season per User Type.", 
+      labs( title = "Bike usage per user type and  per hour and per year.", 
           x = "Hours in 24 hours Format", y = 'Total Count' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
