@@ -19,6 +19,17 @@ function(input,output) {
       scale_fill_discrete(name = "User Type")
   })
   
+  output$boxplot = renderPlot({
+    filter_year() %>% 
+      ggplot(aes(x = Type, y = Typecount)) + geom_boxplot(fill = 'red') +
+      labs( title = "Box plot showing the distribution of usage for each User type.", 
+            x = "User Type", y = 'Total Count' ) + 
+      theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
+            #legend.title = element_text(color = "blue", size = 10,face = "bold"),
+            plot.title = element_text(hjust = 0.5)) +
+      scale_fill_discrete(name = "User Type")
+  })
+  
   output$seasonYear = renderPlot({
     ##Bike useage count per userType per Season
     filter_year() %>% 
@@ -33,11 +44,12 @@ function(input,output) {
       scale_fill_discrete(name = "User Type")
   })
   
-  output$boxplot = renderPlot({
-    filter_year() %>% 
-      ggplot(aes(x = Type, y = Typecount)) + geom_boxplot(fill = 'red') +
-      labs( title = "Box plot showing the distribution of usage for each User type per year.", 
-            x = "User Type", y = 'Total Count' ) + 
+  output$weather = renderPlot({
+    filter_year() -> Weater.df
+      group_by(Weater.df,Year,Season) %>% summarise(AvgT = mean(Temp,na.rm = T)) -> Weater.df
+      ggplot(Weater.df,aes(Season,AvgT))+ geom_bar(fill = 'Red',stat = 'identity') +
+      labs( title = "Average Temperature per season.", 
+            x = "Season", y = 'Average Temperature' ) + 
       theme(text=element_text(size=15),axis.text = element_text(colour = "blue"),
             #legend.title = element_text(color = "blue", size = 10,face = "bold"),
             plot.title = element_text(hjust = 0.5)) +

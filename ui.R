@@ -30,8 +30,9 @@ fluidPage(
             column(12, h4("Plots below compare bike risdeshare demand per user type across years. It can be seen that the \
                           distribution is consitent one year after the other.",align = 'left', style = "color:red")),
             column(6, plotOutput("usercount"), style='padding:20px;'),
+            column(6, plotOutput("boxplot"), style='padding:20px;'),
             column(6, plotOutput("seasonYear"), style='padding:20px;'),
-            column(12, plotOutput("boxplot")),
+            column(6, plotOutput("weather"), style='padding:20px;'),
             )
         ),
         
