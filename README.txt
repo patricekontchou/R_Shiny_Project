@@ -1,6 +1,6 @@
 Bikeshare Demand Analyis and Prediction.
 
-<<<<<Shiny app of the exploratory analys and vizualization can be found on: https://patricenycdsa.shinyapps.io/R_Shiny_Project/>>>>>>
+<<<<<Shiny app of the exploratory analysis and vizualization can be found on: https://patricenycdsa.shinyapps.io/R_Shiny_Project/>>>>>>
 
 Main obectives:
 
